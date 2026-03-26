@@ -1,3 +1,11 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r}
+
 library(tidyverse)
 library(readxl)
 library(dplyr)
@@ -5,7 +13,7 @@ library(tidymodels)
 library(ggplot2)
 library(janitor)
 
-statsdata <- read.excel("statsdata.xlsx")
+statsdata <- read_excel("statsdata.xlsx")
 
 wide_statsdata <- statsdata %>%
   select(`Country Name`, `Series Name`, `2016 [YR2016]`) %>%
@@ -16,7 +24,9 @@ wide_statsdata <- statsdata %>%
   ) %>%
   filter(!is.na(`GDP per capita (current US$)`) & !is.na(`Life expectancy at birth, total (years)`))
 
+```
 
+```{r}
 #question 1
 
 wide_statsdata %>%
@@ -28,14 +38,17 @@ wide_statsdata %>%
     Max = max(`Life expectancy at birth, total (years)`),
     IQR = IQR(`Life expectancy at birth, total (years)`)
   )
+```
 
+```{r}
 #question 2
-#these two need to be highlighted in order to run
 
 wide_statsdata %>% filter(`Life expectancy at birth, total (years)` == min(`Life expectancy at birth, total (years)`))
 
 wide_statsdata %>% filter(`Life expectancy at birth, total (years)` == max(`Life expectancy at birth, total (years)`))
+```
 
+```{r}
 #question 3
 
 ggplot(wide_statsdata, aes(x = `Life expectancy at birth, total (years)`)) +
@@ -45,13 +58,15 @@ ggplot(wide_statsdata, aes(x = `Life expectancy at birth, total (years)`)) +
        y = "Number of Countries") +
   theme_minimal() +
   theme(plot.title = element_text(color = "#2c5d63", face = "bold"))
+```
 
+```{r}
 #question 4 - scatterplot
 
 wide_statsdata %>%
   ggplot(mapping = aes(x = log(`GDP per capita (current US$)`),
                        y = `Life expectancy at birth, total (years)`,
-                       color = "#2c5d63")) +
+                       color = "#7bc0a3")) +
   geom_point(alpha = 0.2) +
   labs(x = "Log of GDP per Capita ($)",
        y = "Life Expectancy (years)",
@@ -63,8 +78,9 @@ question4 <- lm(
 )
 
 summary(question4)$r.squared
+```
 
-
+```{r}
 #question 5 - regression
 
 question5 <- lm(
@@ -73,5 +89,5 @@ question5 <- lm(
 )
 
 summary(question5)
-
+```
 
